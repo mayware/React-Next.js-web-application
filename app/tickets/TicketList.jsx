@@ -1,7 +1,9 @@
 import Link from "next/link";
 
 async function getTickets() {
-    const res = await fetch('http://localhost:4000/tickets', {
+    await new Promise(resolve => setTimeout(resolve, 3000))
+
+    const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
         next: {
             revalidate: 0
         }
