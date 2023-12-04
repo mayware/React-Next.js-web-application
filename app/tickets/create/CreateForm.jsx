@@ -10,9 +10,29 @@ const CreateForm = () => {
     const [body, setBody] = useState('');
     const [priority, setPriority] = useState('low');
     const [isLoading, setIsLoading] = useState(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+        const ticket = {
+            title, body, priority, user_email: 'testuser@email.com'
+        }
+
+        const res = await fetch('http://localhost:4000/tickets', {
+            method: 'POST',
+            headers: { "Content-type": "application/json" },
+            body: JSON.stringify(ticket)
+        })
+
+
+        //redirecting user to the tickets page after user adds the new ticket
+        if (res.status == 201) {
+            router.refresh()
+            router.push('/tickets')
+        }
+    }
 
     return (
-        <form className="w-1/2">
+        <form onSubmit={handleSubmit} className="w-1/2">
             <label>
                 <span>Title:</span>
                 <input
@@ -39,7 +59,7 @@ const CreateForm = () => {
                 >
                     <option value="low">Low Priority</option>
                     <option value="medium">Medium Priority</option>
-                    <option value="high">high Priority</option>
+                    <option value="high">High Priority</option>
                 </select>
             </label>
             <button
